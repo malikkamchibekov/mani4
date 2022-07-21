@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 {% load static %}
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
@@ -65,7 +63,7 @@
                         <a href="#"><i class="fa fa-desktop "></i>ПРОИЗВОДСТВО<span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="prod_catalog"><i class="fa fa-toggle-on"></i>КАТАЛОГ</a>
+                                <a href="catalogue"><i class="fa fa-toggle-on"></i>КАТАЛОГ</a>
                             </li>
                             <li>
                                 <a href="salary"><i class="fa fa-bell "></i>ЕЖЕДНЕВКА ВЫРАБОТКА</a>
@@ -109,31 +107,17 @@
                         <a href="#"><i class="fa fa-desktop "></i>ПРОДАЖИ<span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="salary_total"><i class="fa fa-toggle-on"></i>КЛИЕНТЫ</a>
+                                <a href="new_client"><i class="fa fa-toggle-on"></i>Добавить клиента</a>
+                            </li>
+                              <li>
+                                <a href="clients"><i class="fa fa-toggle-on"></i>КЛИЕНТЫ</a>
                             </li>
                             <li>
-                                <a href="salary"><i class="fa fa-bell "></i>ПРОДАЖИ</a>
+                                <a href="salary_total"><i class="fa fa-bell "></i>ПРОДАЖИ</a>
                             </li>
                              <li>
-                                <a href="progress"><i class="fa fa-circle-o "></i>Progressbars</a>
+                                <a href="new_sale"><i class="fa fa-bell "></i>ПРОДАЖА НОВАЯ</a>
                             </li>
-                             <li>
-                                <a href="buttons.html"><i class="fa fa-code "></i>Buttons</a>
-                            </li>
-                             <li>
-                                <a href="icons.html"><i class="fa fa-bug "></i>Icons</a>
-                            </li>
-                             <li>
-                                <a href="wizard.html"><i class="fa fa-bug "></i>Wizard</a>
-                            </li>
-                             <li>
-                                <a href="typography.html"><i class="fa fa-edit "></i>Typography</a>
-                            </li>
-                             <li>
-                                <a href="grid.html"><i class="fa fa-eyedropper "></i>Grid</a>
-                            </li>
-
-
                         </ul>
                     </li>
 
@@ -162,102 +146,16 @@
                             <li>
                                 <a href="salary"><i class="fa fa-bell "></i>ЗАРПЛАТА</a>
                             </li>
-                             <li>
-                                <a href="progress"><i class="fa fa-circle-o "></i>Progressbars</a>
-                            </li>
-                             <li>
-                                <a href="buttons.html"><i class="fa fa-code "></i>Buttons</a>
-                            </li>
-                             <li>
-                                <a href="icons.html"><i class="fa fa-bug "></i>Icons</a>
-                            </li>
-                             <li>
-                                <a href="wizard.html"><i class="fa fa-bug "></i>Wizard</a>
-                            </li>
-                             <li>
-                                <a href="typography.html"><i class="fa fa-edit "></i>Typography</a>
-                            </li>
-                             <li>
-                                <a href="grid.html"><i class="fa fa-eyedropper "></i>Grid</a>
-                            </li>
-
-
                         </ul>
-                    </li>
-
-                    <li>
-                        <a href="table.html"><i class="fa fa-flash "></i>Data Tables </a>
-
-                    </li>
-                     <li>
-                        <a href="#"><i class="fa fa-bicycle "></i>Forms <span class="fa arrow"></span></a>
-                         <ul class="nav nav-second-level">
-
-                             <li>
-                                <a href="form.html"><i class="fa fa-desktop "></i>Basic </a>
-                            </li>
-                             <li>
-                                <a href="form-advance.html"><i class="fa fa-code "></i>Advance</a>
-                            </li>
-
-
-                        </ul>
-                    </li>
-                      <li>
-                        <a href="gallery.html"><i class="fa fa-anchor "></i>Gallery</a>
-                    </li>
-                     <li>
-                        <a href="error.html"><i class="fa fa-bug "></i>Error Page</a>
-                    </li>
-                    <li>
-                        <a href="login.html"><i class="fa fa-sign-in "></i>Login Page</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap "></i>Multilevel Link <span class="fa arrow"></span></a>
-                         <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#"><i class="fa fa-bicycle "></i>Second Level Link</a>
-                            </li>
-                             <li>
-                                <a href="#"><i class="fa fa-flask "></i>Second Level Link</a>
-                            </li>
-                            <li>
-                                <a href="#">Second Level Link<span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus "></i>Third Level Link</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-comments-o "></i>Third Level Link</a>
-                                    </li>
-
-                                </ul>
-
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a href="blank.html"><i class="fa fa-square-o "></i>Blank Page</a>
                     </li>
                 </ul>
-
             </div>
-
         </nav>
-
-
-
-
     {% block content %}
     {% endblock %}
 
-
-
-
-
     <div id="footer-sec">
-        &copy; 2022 LeetCompany | Design By : <a href="" target="_blank">BT</a>
+        &copy; 2022 LightCode | Design By : <a href="" target="_blank">Malik and Abdrakhman</a>
     </div>
     <!-- /. FOOTER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
@@ -269,8 +167,6 @@
     <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
        <!-- CUSTOM SCRIPTS -->
     <script src="{% static 'assets/js/custom.js' %}"></script>
-
-
 </div>
 </body>
 </html>
