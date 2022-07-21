@@ -8,58 +8,47 @@
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-head-line">DASHBOARD</h1>
+                        <h1 class="page-head-line">Продажи учет</h1>
 					</div>
-                <title>Отчет о зарплате</title>
+                <title>Продажи</title>
 
 
 	<body>
 	<section class="ftco-section">
 		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">ОТЧЕТ О ЗАРПЛАТЕ</h2>
-				</div>
-			</div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-15">
 					<div class="table-wrap">
 						<table class="table table-striped">
 						  <thead>
 						    <tr>
-						      <th>№</th>
-								<th>ФИО</th>
-						      <th>ДОЛЖНОСТЬ</th>
-						      <th>РАБ ДНЕЙ</th>
-						      <th>ФАКТ ДНИ</th>
-						      <th>ОКЛАД_СФ</th>
-								<th>ФАКТ_ОКЛАД</th>
-						      <th>Работодатель (соцфонд)</th>
-								<th>ОКЛАД(начис)</th>
-						      <th>ПУ</th>
-								<th>ЭВА</th>
-								<th>Начислено</th>
-								<th>Премия</th>
-								<th>Аванс</th>
-								<th>Продажа тов</th>
-								<th>Выплата</th>
+
+						      <th>Артикул</th>
+						      <th>Название</th>
+						      <th>Тип</th>
+						      <th>Размер</th>
+						      <th>Кол-во</th>
+						      <th>Цена</th>
+							  <th>Сумма</th>
+						      <th>Дата и время</th>
+								<th>Статус</th>
 						    </tr>
 						  </thead>
 						  <tbody>
-						  {% for i in payroll %}
-
+						  {% for sale in sales %}
 						    <tr>
-
-						      <th scope="row">{{ i.employee.id }}</th>
-						      <td>{{ i.employee }}</td>
-						      <td>{{ i.employee.occupation }}</td>
-								<td>{{ i.employee.monthly_salary }}</td>
-						      <td>{{ i.oklad_fact }}</td>
+						      <th >{{ sale.vendor_code }}</th>
+								<td>{{ sale.title }}</td>
+						      <td>{{ sale.type }}</td>
+						      <td>{{ sale.size }}</td>
+						      <td>{{ sale.quantity }}</td>
+						      <td>{{ sale.price }}</td>
+								<td>{{ sale.total }}</td>
+								<td>{{ sale.create_time }}</td>
+						      <td><a href="edit_sale/{{ sale.id }}">Изменить</a> | <a href="delete_sale/{{ sale.id }}">Удалить</a></td>
 						    </tr>
 						  {% endfor %}
-
 						  </tbody>
-
 						</table>
 					</div>
 				</div>
