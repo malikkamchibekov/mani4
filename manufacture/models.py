@@ -42,7 +42,7 @@ class SalaryTotal(models.Model):  # общая зарплата
 #    occupation = models.ForeignKey('Occupation', null=True, blank=True, on_delete=models.CASCADE,
                               #     related_name='salary_occupation')
     sales = models.ForeignKey('Sale', on_delete=models.CASCADE, null=True, blank=True, related_name='salary_sales')
-    working_out = models.OneToOneField('Production', on_delete=models.CASCADE, null=True, blank=True)
+    # working_out = models.OneToOneField('Production', on_delete=models.CASCADE, null=True, blank=True)
     month = models.DateTimeField(auto_now=True)
     working_days = models.IntegerField(null=True)
     fact_work_days = models.IntegerField(null=True)
@@ -56,26 +56,6 @@ class SalaryTotal(models.Model):  # общая зарплата
 
     def __str__(self):
         return f'{self.viplata}'
-
-    # def social_fund(self):  # оц фонд отчисления работника 18%
-    #
-    #     return self.oklad_social_fund * 0.18
-    #
-    # def firm_social_fund(self):  # соц фонд отчисления работодателя 17,25%
-    #
-    #     return self.oklad_social_fund * 0.1725
-
-    # def accrued_salary(self):#Начисленная зарплата=Сдельная станок ПУ (карусель(Выплата))+ Сдельная ЭВА(Расчет по ЭВА(Сдельная зарплата))
-    #     return (self.calc_pu + self.calc_eva)
-    #
-    #
-    # def calc_pu(self): #Сдельная станок ПУ (карусель(Выплата)):
-    #     pass
-    #
-    #
-    # def calc_eva(self): #Сдельная ЭВА(Расчет по ЭВА(Сдельная зарплата)
-    #     pass
-    #
 
 
 class Occupation(models.Model):
@@ -102,21 +82,6 @@ class Employee(models.Model):
         return self.fio
 
 
-class Production(models.Model):  # Выробатка
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
-    updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
-    model = models.ForeignKey('Catalogue', on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=0, verbose_name='Кол-во')
-    defect_worker = models.IntegerField(default=0)
-
-
-    # workers_defect = models.IntegerField(default=0)  # Брак рабочих
-    # machines_defect = models.IntegerField(default=0)  # Брак станков
-    # say_marriage = models.IntegerField(default=0)  # Брак Сая
-    #
-    # def __str__(self):
-    #     return f'{self.quantity}'
-
 class Client(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, verbose_name='Клиент')
@@ -126,3 +91,36 @@ class Client(models.Model):
 
     def __str__(self):
         return f'{self.name}, {self.phone}'
+
+
+class DailyTimesheet(models.Model):
+    date = models.DateTimeField()
+    employee = models.ForeignKey('Employee', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.date}'
+
+
+class DailyProduction(models.Model):
+    timesheet = models.ForeignKey('DailyTimesheet', on_delete=models.CASCADE)
+    catalogue = models.ForeignKey('Catalogue', on_delete=models.CASCADE, related_name='daily_pro_catalogue')
+    quantity = models.PositiveIntegerField(default=0)
+    defect_worker = models.PositiveIntegerField(default=0)
+    defect_machine = models.PositiveIntegerField(default=0)
+    defect_saya = models.PositiveIntegerField(default=0)
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+    updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+
+    def defect_sum(self):
+        return self.defect_machine + self.defect_worker
+
+    package = models.PositiveIntegerField()
+    # def package(self):
+    #     return self.quantity // 6
+
+    def __str__(self):
+        return f'{self.created_date}'
+
+
+
+
