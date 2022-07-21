@@ -1,8 +1,10 @@
+import datetime
+
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
-
+from datetime import datetime
 def index(request):
     return render(request, 'manufacture/index.html')
 
@@ -120,4 +122,14 @@ def new_employee(request):
     else:
         form = ClientForm()
     return render(request, 'manufacture/new_client.html', {'form': form})
+
+
+def daily_production(request):
+    productions = DailyProduction.objects.all()
+    context = {
+        'production': productions,
+
+    }
+    return render(request, 'manufacture/daily_production.html', context)
+
 
