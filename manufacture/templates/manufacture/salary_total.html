@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+ <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">DASHBOARD</h1>
+					</div>
+                <title>Отчет о зарплате</title>
+
+
+	<body>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5">
+					<h2 class="heading-section">ОТЧЕТ О ЗАРПЛАТЕ</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="table-wrap">
+						<table class="table table-striped">
+						  <thead>
+						    <tr>
+						      <th>№</th>
+								<th>ФИО</th>
+						      <th>ДОЛЖНОСТЬ</th>
+						      <th>РАБ ДНЕЙ</th>
+						      <th>ФАКТ ДНИ</th>
+						      <th>ОКЛАД_СФ</th>
+								<th>ФАКТ_ОКЛАД</th>
+						      <th>Работодатель (соцфонд)</th>
+								<th>ОКЛАД(начис)</th>
+						      <th>ПУ</th>
+								<th>ЭВА</th>
+								<th>Начислено</th>
+								<th>Премия</th>
+								<th>Аванс</th>
+								<th>Продажа тов</th>
+								<th>Выплата</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						  {% for i in payroll %}
+
+						    <tr>
+
+						      <th scope="row">{{ i.employee.id }}</th>
+						      <td>{{ i.employee }}</td>
+						      <td>{{ i.employee.occupation }}</td>
+								<td>{{ i.employee.monthly_salary }}</td>
+						      <td>{{ i.oklad_fact }}</td>
+						    </tr>
+						  {% endfor %}
+
+						  </tbody>
+
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+				</div>
+
+            </div>
+
+	</html>
+</div>
+{% endblock %}
