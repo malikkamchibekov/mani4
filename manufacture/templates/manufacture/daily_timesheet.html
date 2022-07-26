@@ -3,14 +3,28 @@
 
 
 {% block content %}
-
+   <style>
+      .button {
+      background-color: #66FF99;
+      border: none;
+      color: black;
+      padding: 20px 34px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 4px 2px;
+      cursor: pointer;
+      }
+    </style>
  <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-head-line">Каталог</h1>
+                        <h1 class="page-head-line">Табель</h1>
+						<a href="new_daily_timesheet" class="button">Добавить</a>
 					</div>
-                <title>Каталог</title>
+                <title>Табель</title>
 
 
 	<body>
@@ -18,7 +32,7 @@
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Каталог</h2>
+					<h2 class="heading-section">Табель</h2>
 				</div>
 			</div>
 			<div class="row">
@@ -28,21 +42,15 @@
 						  <thead>
 						    <tr>
 
-						      <th>Артикул</th>
-						      <th>Название</th>
-						      <th>Тип</th>
-						      <th>Размер</th>
-						      <th>Изображение</th>
+						      <th>Дата</th>
+						      <th>Сотрудник</th>
 						    </tr>
 						  </thead>
 						  <tbody>
-						  {% for item in catalogue %}
+						  {% for item in timesheet %}
 						    <tr>
-						      <th >{{ item.vendor_code }}</th>
-								<td>{{ item.title }}</td>
-						      <td>{{ item.type }}</td>
-						      <td>{{ item.size }}</td>
-						      <td><img src="{{ item.image_url|default_if_none:'#' }}" alt=""></td>
+						      <th >{{ item.date }}</th>
+								<td>{{ item.employee }}</td>
 						    </tr>
 						  {% endfor %}
 						  </tbody>

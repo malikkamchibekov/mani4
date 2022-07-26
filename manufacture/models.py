@@ -1,40 +1,41 @@
 from django.db import models
 
-STATUSES = [
-        ('Новый', 'Новый'),
-        ('В процессе', 'В процессе'),
-        ('Собран', 'Собран'),
-        ('Отгружен', 'Отгружен'),
-        ('Оплачен', 'Оплачен'),
-    ]
-
 
 class Sale(models.Model):
+    client = models.ForeignKey('Client', on_delete=models.PROTECT, verbose_name='Клиент', blank=True)
     vendor_code = models.CharField(max_length=40, verbose_name='Артикул')
     title = models.CharField(max_length=40, verbose_name="Наименование")
     type = models.CharField(max_length=40, verbose_name="Модель")
     size = models.CharField(max_length=40, verbose_name="Размер")
     quantity = models.IntegerField(default=0, verbose_name="Кол-во")
     price = models.DecimalField(max_digits=40, decimal_places=2, default=0, verbose_name="Цена сом")
-    status = models.CharField(max_length=40, choices=STATUSES)
     total = models.DecimalField(max_digits=40, decimal_places=2, verbose_name="Сумма сом")
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     update_time = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
+
+    def fetch_total(self):
+        self.total = self.quantity * self.price
+        return self.total
 
     def __str__(self):
         return f'{self.vendor_code}'
 
 
 class Catalogue(models.Model):
-    vendor_code = models.CharField(max_length=40)  # Артикул модели
-    image = models.ImageField(upload_to='media/products/%Y/%m/%d', blank=True)  # Фото товара
-    title = models.CharField(max_length=40, blank=True, null=True) # Название модели
-    type = models.CharField(max_length=40)  # Тип модели обуви(цвета, отделка, и т.д.)
-    size = models.CharField(max_length=40)  # Размерная сетка
-    rest_quantity = models.PositiveIntegerField()  # Остаток на складе
+    vendor_code = models.CharField(max_length=40, verbose_name='Артикул')  # Артикул модели
+    image = models.ImageField(upload_to='media/products/%Y/%m/%d', blank=True, verbose_name="Фото")  # Фото товара
+    title = models.CharField(max_length=40, blank=True, null=True, verbose_name="Наименование")  # Название модели
+    type = models.CharField(max_length=40, verbose_name="Тип модели")  # Тип модели обуви(цвета, отделка, и т.д.)
+    size = models.CharField(max_length=40, verbose_name="Размеры")  # Размерная сетка
+    # rest_quantity = models.PositiveIntegerField()  # Остаток на складе
+
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
 
     def __str__(self):
-        return f'{self.vendor_code}, {self.type}'
+        return f'{self.vendor_code}'
 
 
 class SalaryTotal(models.Model):  # общая зарплата
@@ -58,23 +59,13 @@ class SalaryTotal(models.Model):  # общая зарплата
         return f'{self.viplata}'
 
 
-class Occupation(models.Model):
-    active = models.BooleanField(default=True)
-    title = models.CharField(max_length=64)
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.title
-
-
 class Employee(models.Model):
     active = models.BooleanField(default=True)
-    date_start = models.DateTimeField(auto_now_add=True)
+    occupation = models.CharField(max_length=100, blank=True)
+    date_start = models.DateField(verbose_name="Дата начала работы", blank=True)
     fio = models.CharField(max_length=64, unique=True)  # имя фамилия отчество сотрудника
     phone = models.CharField(max_length=20, blank=True)
     phone1 = models.CharField(max_length=20, blank=True)
-    occupation = models.ForeignKey('Occupation', null=True, blank=True, on_delete=models.CASCADE,
-                                   related_name='employer_ocupation')
     monthly_salary = models.IntegerField(default=0)
     objects = models.Manager()
 
@@ -94,32 +85,34 @@ class Client(models.Model):
 
 
 class DailyTimesheet(models.Model):
-    date = models.DateTimeField()
-    employee = models.ForeignKey('Employee', on_delete=models.CASCADE)
+    date = models.DateField(verbose_name="Дата")
+    employee = models.ForeignKey('Employee', on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f'{self.date}'
 
 
 class DailyProduction(models.Model):
-    timesheet = models.ForeignKey('DailyTimesheet', on_delete=models.CASCADE)
-    catalogue = models.ForeignKey('Catalogue', on_delete=models.CASCADE, related_name='daily_pro_catalogue')
-    quantity = models.PositiveIntegerField(default=0)
-    defect_worker = models.PositiveIntegerField(default=0)
-    defect_machine = models.PositiveIntegerField(default=0)
-    defect_saya = models.PositiveIntegerField(default=0)
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+    timesheet = models.ForeignKey('DailyTimesheet', on_delete=models.CASCADE, verbose_name='Табель')
+    catalogue = models.ForeignKey('Catalogue', on_delete=models.CASCADE, related_name='catalogues', verbose_name="Модель")
+    quantity = models.PositiveIntegerField(default=0, verbose_name="Кол. пар")
+    package = models.PositiveIntegerField(blank=True)
+    defect_worker = models.PositiveIntegerField(default=0, verbose_name="Брак рабочие")
+    defect_machine = models.PositiveIntegerField(default=0, verbose_name="Брак станок")
+    defect_saya = models.PositiveIntegerField(default=0, verbose_name="Брак САЯ")
+    date = models.DateField(verbose_name="Дата", null=True)
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания', )
     updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 
     def defect_sum(self):
         return self.defect_machine + self.defect_worker
 
-    package = models.PositiveIntegerField()
-    # def package(self):
-    #     return self.quantity // 6
+    def fetch_package(self):
+        return self.quantity // 6
 
     def __str__(self):
-        return f'{self.created_date}'
+        return f'{self.id}'
+
 
 
 

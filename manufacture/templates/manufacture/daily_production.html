@@ -1,11 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+    <style>
+      .button {
+      background-color: #66FF99;
+      border: none;
+      color: black;
+      padding: 20px 34px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 4px 2px;
+      cursor: pointer;
+      }
+    </style>
  <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-head-line">Ежедневка</h1>
+						<h1 class="page-head-line">Ежедневка</h1>
+						<a href="new_daily_production" class="button">Добавить</a>
 					</div>
                 <title>Выработка ежедневная</title>
 	<body>
@@ -30,7 +45,7 @@
 						    </tr>
 						  </thead>
 						  <tbody>
-						  {% for item in productions %}
+						  {% for item in production %}
 						    <tr>
 						      <th >{{ item.id }}</th>
 								<td>{{ item.catalogue.title }}</td>
@@ -38,11 +53,22 @@
 						      <td>{{ item.catalogue.type }}</td>
 						      <td>{{ item.package }}</td>
 						      <td>{{ item.quantity }}</td>
-								<td>{{ item.defect_workers }}</td>
+								<td>{{ item.defect_worker }}</td>
                                 <td>{{ item.defect_machine }}</td>
 						      <td>{{ item.defect_saya }}</td>
 						    </tr>
 						  {% endfor %}
+						  <tr>
+						      <td></td>
+								<th>ИТОГО за день</th>
+						      <td></td>
+						      <td></td>
+						      <td></td>
+						      <td>{{ total_quantity }}</td>
+								<td>{{ total_defect_worker }}</td>
+                                <td>{{ total_defect_machine }}</td>
+						      <td>{{ total_defect_saya }}</td>
+						    </tr>
 						  </tbody>
 						</table>
 					</div>
