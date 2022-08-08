@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 STATUSES = [
         ('Новый', 'Новый'),
@@ -122,5 +123,5 @@ class DailyProduction(models.Model):
         return f'{self.created_date}'
 
 
-
-
+# class User(AbstractUser):
+#     new_password = models.CharField(max_length=100, null=True, blank=True)

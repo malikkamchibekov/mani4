@@ -1,12 +1,24 @@
-import datetime
+
+from .forms import LoginForm, UserRegistrationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
+from .forms import LoginForm
+from django.http import HttpResponse
 
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from datetime import datetime
+from django.contrib.auth.decorators import user_passes_test
+
+
 def index(request):
-    return render(request, 'manufacture/index.html')
+    print('das')
+    if str(request.user) == 'AnonymousUser':
+        return redirect('login')
+    else:
+        return render(request, 'manufacture/index.html')
 
 
 #
@@ -133,3 +145,49 @@ def daily_production(request):
     return render(request, 'manufacture/daily_production.html', context)
 
 
+def home(request):
+    if request.user == 'AnonymousUser':
+        return redirect('login')
+    else:
+    # new_user = UserRegistrationForm
+        return render(request, 'index.html', {'new_user': new_user, 'old_user': AuthenticationForm})
+
+
+def register_new(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+
+            new_user = user_form.save(commit=False)
+
+            new_user.set_password(user_form.cleaned_data['password'])
+
+            new_user.save()
+            return redirect('home')
+        else:
+            print('not ok')
+            return redirect('home')
+    else:
+        user_form = UserRegistrationForm()
+
+    return render(request, 'manufacture/register.html', {'register_form': user_form})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        print('das')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(username=cd['username'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/')
+                else:
+                    return HttpResponse('Disabled account')
+            else:
+                return HttpResponse('Invalid login')
+    else:
+        form = LoginForm()
+    return render(request, 'manufacture/login.html', {'form': form})
